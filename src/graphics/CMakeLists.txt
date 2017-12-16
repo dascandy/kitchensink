@@ -1,5 +1,4 @@
-set(KITCHENSINK_INCLUDES
-   ${KITCHENSINK_INCLUDES}
+add_library(graphics
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/analogclock.h
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/animated_tiles.h
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/draglabel.h
@@ -10,10 +9,6 @@ set(KITCHENSINK_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/mandelbrot_thread.h
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/mandelbrot_widget.h
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/screenshot.h
-)
-
-set(KITCHENSINK_SOURCES
-   ${KITCHENSINK_SOURCES}
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/analogclock.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/animated_tiles.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/draglabel.cpp
@@ -24,4 +19,9 @@ set(KITCHENSINK_SOURCES
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/mandelbrot_thread.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/mandelbrot_widget.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/graphics/screenshot.cpp
+)
+
+target_include_directories(graphics
+  PUBLIC
+    .
 )

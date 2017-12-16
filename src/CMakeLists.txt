@@ -17,17 +17,7 @@ if (HAVE_WINDOWS_H)
    add_definitions(-DHAVE_WINDOWS_H)
 endif()
 
-
-# location of includes
-include_directories(
-   ${CMAKE_CURRENT_SOURCE_DIR}/audio
-   ${CMAKE_CURRENT_SOURCE_DIR}/graphics
-   ${CMAKE_CURRENT_SOURCE_DIR}/network
-   ${CMAKE_CURRENT_SOURCE_DIR}/views
-   ${CMAKE_CURRENT_SOURCE_DIR}/widgets
-)
-
-set(KITCHENSINK_INCLUDES
+add_executable(KitchenSink 
    ${CMAKE_CURRENT_SOURCE_DIR}/aboutcs.h
    ${CMAKE_CURRENT_SOURCE_DIR}/colorpicker.h
    ${CMAKE_CURRENT_SOURCE_DIR}/dialogs.h
@@ -48,9 +38,6 @@ set(KITCHENSINK_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/xml.h
    ${CMAKE_CURRENT_SOURCE_DIR}/xmlpatterns.h
    ${CMAKE_CURRENT_SOURCE_DIR}/xmlsyntaxhighlighter.h
-)
-
-set(KITCHENSINK_SOURCES
    ${CMAKE_CURRENT_SOURCE_DIR}/aboutcs.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/colorpicker.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/dialogs.cpp
@@ -60,6 +47,7 @@ set(KITCHENSINK_SOURCES
    ${CMAKE_CURRENT_SOURCE_DIR}/international.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/qrc_kitchensink.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/script.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/stdpath.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/style_dw.cpp
@@ -71,6 +59,7 @@ set(KITCHENSINK_SOURCES
    ${CMAKE_CURRENT_SOURCE_DIR}/xml.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/xmlpatterns.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/xmlsyntaxhighlighter.cpp
+
    ${CMAKE_CURRENT_SOURCE_DIR}/../forms/mainwindow.ui
    ${CMAKE_CURRENT_SOURCE_DIR}/../forms/chat_dialog.ui
    ${CMAKE_CURRENT_SOURCE_DIR}/../forms/colorpicker.ui
@@ -95,14 +84,7 @@ set(KITCHENSINK_SOURCES
    ${CMAKE_CURRENT_SOURCE_DIR}/../resources/qt_en.ts
    ${CMAKE_CURRENT_SOURCE_DIR}/../resources/qt_de.ts
    ${CMAKE_CURRENT_SOURCE_DIR}/../resources/qt_fr.ts
-   qrc_kitchensink.cpp
 )
-
-include(audio/audio.cmake)
-include(graphics/graphics.cmake)
-include(network/network.cmake)
-include(views/views.cmake)
-include(widgets/widgets.cmake)
 
 # run lrelease to generate translation files
 COPPERSPICE_RESOURCES(
@@ -141,10 +123,9 @@ COPPERSPICE_RESOURCES(
    ${CMAKE_CURRENT_SOURCE_DIR}/../forms/xmlpatterns.ui
 )
 
-add_executable(KitchenSink ${KITCHENSINK_SOURCES} )
-
-target_include_directories(KitchenSink PRIVATE
-   ${CMAKE_SOURCE_DIR}/src
+target_include_directories(KitchenSink 
+  PRIVATE
+    .
 )
 
 target_link_libraries(KitchenSink
@@ -160,12 +141,23 @@ target_link_libraries(KitchenSink
    CopperSpice::CsWebKit${CS_VERSION}
    CopperSpice::CsXml${CS_VERSION}
    CopperSpice::CsXmlPatterns${CS_VERSION}
+   audio
+   network
+   graphics
+   views
+   widgets
 )
 
 if(WIN32)
    # disable console on windows
    target_link_libraries(KitchenSink -lnetapi32 -lmpr -mwindows)
 endif()
+
+add_subdirectory(audio)
+add_subdirectory(graphics)
+add_subdirectory(network)
+add_subdirectory(views)
+add_subdirectory(widgets)
 
 install(TARGETS KitchenSink DESTINATION .)
 
